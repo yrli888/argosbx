@@ -125,7 +125,7 @@ fi
 case "$warp" in *x4*) wxryx='ForceIPv4' ;; *x6*) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv4v6' ;; esac
 if (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" >/dev/null 2>&1) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -6 --tries=2 -qO- "$v46url" >/dev/null 2>&1); then
 xryx='ForceIPv6v4'; sbyx='prefer_ipv6'
-
+else
 case "$warp" in *x4*) xryx='ForceIPv4' ;; esac
 case "$warp" in *x6*) xryx='ForceIPv6v4' ;; esac
 case "$warp" in *s4*) sbyx='prefer_ipv4' ;; esac

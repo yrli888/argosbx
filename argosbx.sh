@@ -133,9 +133,9 @@ case "$warp" in *x4*) wxryx='ForceIPv4' ;; *x6*) wxryx='ForceIPv6' ;; *) wxryx='
 #case "$warp" in *s6*) sbyx='prefer_ipv6' ;; esac
 #[ -z "$xryx" ] && xryx='ForceIPv4v6'
 #[ -z "$sbyx" ] && sbyx='prefer_ipv4'
-
-sbyx='prefer_ipv4'
-xryx='ForceIPv4v6'
+xryx='ForceIPv6v4'
+case "$warp" in *x4*) xryx='ForceIPv4' ;; esac
+sbyx='prefer_ipv6'
 }
 upxray(){
 url="https://github.com/yonggekkk/argosbx/releases/download/argosbx/xray-$cpu"; out="$HOME/agsbx/xray"; (command -v curl >/dev/null 2>&1 && curl -Lo "$out" -# --retry 2 "$url") || (command -v wget>/dev/null 2>&1 && timeout 3 wget -O "$out" --tries=2 "$url")

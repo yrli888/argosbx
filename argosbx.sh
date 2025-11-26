@@ -172,11 +172,6 @@ cat > "$HOME/agsbx/xr.json" <<EOF
   "log": {
   "loglevel": "none"
   },
-  "dns": {
-    "servers": [
-      "${xsdns}"
-      ]
-   },
   "inbounds": [
 EOF
 insuuid
@@ -897,15 +892,6 @@ cat >> "$HOME/agsbx/sb.json" <<EOF
       }
     ],
     "final": "${s2outtag}"
-  },
-    "dns": {
-    "servers": [
-      {
-        "type": "https",
-        "server": "${xsdns}"
-      }
-    ],
-    "strategy": "${sbdnsyx}"
   }
 }
 EOF
@@ -1451,18 +1437,16 @@ fi
 if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsbx/(s|x)' && ! pgrep -f 'agsbx/(s|x)' >/dev/null 2>&1; then
 for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsbx/c|/agsbx/s|/agsbx/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
 kill -15 $(pgrep -f 'agsbx/s' 2>/dev/null) $(pgrep -f 'agsbx/c' 2>/dev/null) $(pgrep -f 'agsbx/x' 2>/dev/null) >/dev/null 2>&1
-#if [ -z "$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -4 -qO- --tries=2 "$v46url" 2>/dev/null) )" ]; then
-#echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1" > /etc/resolv.conf
-#fi
+if [ -z "$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -4 -qO- --tries=2 "$v46url" 2>/dev/null) )" ]; then
+echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1" > /etc/resolv.conf
+fi
 if [ -n "$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -6 -qO- --tries=2 "$v46url" 2>/dev/null) )" ]; then
 sendip="2606:4700:d0::a29f:c001"
 xendip="[2606:4700:d0::a29f:c001]"
-xsdns=$( [ -z "$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -4 -qO- --tries=2 "$v46url" 2>/dev/null) )" ] && echo '[2001:67c:2960::64]' || echo '[2001:4860:4860::8888]' )
 sbdnsyx="ipv6_only"
 else
 sendip="162.159.192.1"
 xendip="162.159.192.1"
-xsdns="8.8.8.8"
 sbdnsyx="ipv4_only"
 fi
 echo "VPS系统：$op"
